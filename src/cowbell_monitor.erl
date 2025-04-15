@@ -177,10 +177,12 @@ handle_info(
     %% remove from list
     DisconnectedNodesInfo1 = lists:keydelete(Node, 1, DisconnectedNodesInfo),
     %% Try to add to monitored nodes
-    error_logger:info_msg("Call add_to_monitor/2", [Node]),
-    add_to_monitor(Node, MonitoredNodes),
+    MonitoredNodes1 = add_to_monitor(Node, MonitoredNodes),
     %% return
-    {noreply, State#state{disconnected_nodes_info = DisconnectedNodesInfo1}};
+    {noreply, State#state{
+        disconnected_nodes_info = DisconnectedNodesInfo1,
+        monitored_nodes = MonitoredNodes1
+    }};
 handle_info(connect_nodes, State) ->
     %% connect
     State1 = connect_nodes(State),
@@ -294,8 +296,7 @@ add_to_monitor(Node, MonitoredNodes) ->
     error_logger:info_msg("MonitorNewNodes: ~p", [MonitoredNodes]),
     add_to_monitor(Node, MonitoredNodes, MonitorNewNodes).
 
-add_to_monitor(Node, MonitoredNodes, false) ->
-    error_logger:info_msg("Node: ~p up but not added to monitor", [Node]),
+add_to_monitor(_Node, MonitoredNodes, false) ->
     MonitoredNodes;
 add_to_monitor(Node, MonitoredNodes, true) ->
     error_logger:info_msg("Add Node: ~p to monitor", [Node]),
