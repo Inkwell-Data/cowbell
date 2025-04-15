@@ -27,7 +27,7 @@
 
 %% API
 -export([start/0, stop/0]).
--export([connect_nodes/0]).
+-export([connect_nodes/0, add_to_monitor/1]).
 
 %% ===================================================================
 %% API
@@ -43,6 +43,10 @@ stop() ->
 -spec connect_nodes() -> ok.
 connect_nodes() ->
     cowbell_monitor:connect_nodes().
+
+-spec add_to_monitor(node() | [node()]) -> ok.
+add_to_monitor(Node) ->
+    cowbell_monitor:add_to_monitor(Node).
 
 %% ===================================================================
 %% Internal
