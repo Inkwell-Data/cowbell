@@ -85,6 +85,10 @@ Cowbell will then start monitoring nodes.
 
 > You may prefer to initialize Cowbell inside of the root supervisor instead. This is particularly true if you are using OTP's `included_applications` feature.
 
+With the function `add_to_monitor/1` is possible add a Node to monitoring.
+
+Another option that can be set in the environment variable `cowbell` is `monitor_new_nodes`, if it's set to `ture` when a new node is connected, automatically `:cowbell` starts monitoring it.
+
 ## Why "Cowbell"?
 _"A cow bell or cowbell is a bell worn by freely roaming livestock, making animals easier to locate should they wander off."_
 - From [Wikipedia](https://en.wikipedia.org/wiki/Cowbell).

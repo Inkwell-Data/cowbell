@@ -36,7 +36,7 @@
 %% macros
 -define(DEFAULT_CHECK_INTERVAL_SEC, 10).
 -define(DEFAULT_ABANDON_NODE_AFTER_SEC, 86400).
--define(DEFAULT_MONITOR_NEW_NODE, false).
+-define(DEFAULT_MONITOR_NEW_NODES, false).
 
 %% types
 -type disconnected_node_info() :: {Node :: atom(), DisconnectedAt :: non_neg_integer()}.
@@ -178,7 +178,7 @@ handle_info(
         monitored_nodes = MonitoredNodes
     } = State
 ) ->
-    error_logger:info_msg("Node '~p --<' got connected", [Node]),
+    error_logger:info_msg("Node '~p' got connected", [Node]),
     %% remove from list
     DisconnectedNodesInfo1 = lists:keydelete(Node, 1, DisconnectedNodesInfo),
     %% Try to add to monitored nodes
@@ -296,7 +296,7 @@ timeout(
 
 -spec add_to_monitor(node(), [node()]) -> [node()].
 add_to_monitor(Node, MonitoredNodes) ->
-    MonitorNewNodes = application:get_env(cowbell, monitor_new_nodes, ?DEFAULT_MONITOR_NEW_NODE),
+    MonitorNewNodes = application:get_env(cowbell, monitor_new_nodes, ?DEFAULT_MONITOR_NEW_NODES),
     add_to_monitor(Node, MonitoredNodes, MonitorNewNodes).
 
 add_to_monitor(_Node, MonitoredNodes, false) ->
