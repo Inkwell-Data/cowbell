@@ -28,7 +28,7 @@
 
 %% API
 -export([start_link/0]).
--export([connect_nodes/0]).
+-export([connect_nodes/0, add_to_monitor/1]).
 
 %% gen_server callbacks
 -export([init/1, handle_call/3, handle_cast/2, handle_info/2, terminate/2, code_change/3]).
@@ -62,6 +62,9 @@ start_link() ->
 connect_nodes() ->
     gen_server:call(?MODULE, connect_nodes).
 
+-spec add_to_monitor(node() | [node()]) -> ok.
+add_to_monitor(Node) ->
+    gen_server:cast(?MODULE, {add_to_monitor, Node}).
 %% ===================================================================
 %% Callbacks
 %% ===================================================================
@@ -124,7 +127,9 @@ handle_call(Request, From, State) ->
     {noreply, #state{}}
     | {noreply, #state{}, Timeout :: non_neg_integer()}
     | {stop, Reason :: any(), #state{}}.
-
+handle_cast({add_to_monitor, Node}, #state{monitored_nodes = MonitoredNodes} = State) ->
+    MonitoredNodes1 = add_to_monitor(Node, MonitoredNodes, true),
+    {noreply, State#state{monitored_nodes = MonitoredNodes1}};
 handle_cast(Msg, State) ->
     error_logger:warning_msg("Received an unknown cast message: ~p", [Msg]),
     {noreply, State}.
