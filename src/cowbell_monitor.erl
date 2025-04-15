@@ -291,13 +291,16 @@ timeout(
 
 -spec add_to_monitor(node(), [node()]) -> [node()].
 add_to_monitor(Node, MonitoredNodes) ->
-    error_logger:info_msg("Add to monitor: ~p", [Node]),
     MonitorNewNodes = application:get_env(cowbell, monitor_new_nodes, ?DEFAULT_MONITOR_NEW_NODE),
-    error_logger:info_msg("MonitorNewNodes: ~p", [MonitoredNodes]),
     add_to_monitor(Node, MonitoredNodes, MonitorNewNodes).
 
 add_to_monitor(_Node, MonitoredNodes, false) ->
     MonitoredNodes;
 add_to_monitor(Node, MonitoredNodes, true) ->
-    error_logger:info_msg("Add Node: ~p to monitor", [Node]),
-    [Node | MonitoredNodes].
+    case lists:member(Node, MonitoredNodes) of
+        true ->
+            MonitoredNodes;
+        false ->
+            error_logger:info_msg("Add Node: ~p to monitor", [Node]),
+            [Node | MonitoredNodes]
+    end.
