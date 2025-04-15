@@ -17,10 +17,12 @@ Cowbell automatically manages the connections & reconnections for you.
 If you're using [rebar3](https://github.com/erlang/rebar3), add `cowbell` as a dependency in your project's `rebar.config` file:
 
 ```erlang
-{cowbell, {git, "git://github.com/ostinelli/cowbell.git", {tag, "1.0.1"}}}
+{cowbell, {git, "git@gitlab.inkwelldata.com:altior/core/cowbell.git", {tag, "1.1.0"}}}
 ```
 
-Or, if you're using [Hex.pm](https://hex.pm/) as package manager (with the [rebar3_hex](https://github.com/hexpm/rebar3_hex) plugin):
+This doesn't works:
+
+~~Or, if you're using [Hex.pm](https://hex.pm/) as package manager (with the [rebar3_hex](https://github.com/hexpm/rebar3_hex) plugin):~~
 
 ```erlang
 {cowbell, "1.0.1"}
@@ -85,9 +87,30 @@ Cowbell will then start monitoring nodes.
 
 > You may prefer to initialize Cowbell inside of the root supervisor instead. This is particularly true if you are using OTP's `included_applications` feature.
 
-With the function `add_to_monitor/1` is possible add a Node to monitoring.
+With the function: 
 
-Another option that can be set in the environment variable `cowbell` is `monitor_new_nodes`, if it's set to `ture` when a new node is connected, automatically `:cowbell` starts monitoring it.
+```erlang
+cowbell:add_to_monitor/1
+```
+
+is possible add a Node to monitoring.
+
+Another option that can be set in the environment variable `cowbell` is `monitor_new_nodes`, if it's set to `ture` when a new node is connected, automatically `:cowbell` starts monitoring it:
+
+```erlang
+{cowbell, [
+
+    %% check interval for nodes events (Default: 10)
+    %% {check_interval_sec, 10},
+
+    %% abandon a node after unsuccessful reconnect (Default: 86400)
+    %% {abandon_node_after_sec, 86400},
+
+    %% list of nodes to connect to and monitor
+    {monitor_new_nodes, true}
+
+]}.
+```
 
 ## Why "Cowbell"?
 _"A cow bell or cowbell is a bell worn by freely roaming livestock, making animals easier to locate should they wander off."_
