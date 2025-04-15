@@ -1,20 +1,18 @@
-{application, cowbell,
-    [
-        {description, "A node connection manager."},
-        {vsn, "1.0.1"},
-        {registered, [
-            cowbell_monitor,
-            cowbell_sup
-        ]},
-        {applications, [
-            kernel,
-            stdlib
-        ]},
-        {mod, {cowbell_app, []}},
-        {env, []},
+{application, cowbell, [
+    {description, "A node connection manager."},
+    {vsn, "1.1.0"},
+    {registered, [
+        cowbell_monitor,
+        cowbell_sup
+    ]},
+    {applications, [
+        kernel,
+        stdlib
+    ]},
+    {mod, {cowbell_app, []}},
+    {env, []},
 
-        {maintainers, ["Roberto Ostinelli"]},
-        {licenses, ["MIT"]},
-        {links, [{"Github", "https://github.com/ostinelli/cowbell"}]}
-    ]
-}.
+    {maintainers, ["Roberto Ostinelli"]},
+    {licenses, ["MIT"]},
+    {links, [{"Github", "https://github.com/ostinelli/cowbell"}]}
+]}.
